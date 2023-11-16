@@ -1,39 +1,44 @@
 # Análisis de calidad del aire y datos demográficos
 
-## Introducción
-Este proyecto se enfoca en analizar la calidad del aire en ciudades de los Estados Unidos y su relación con los datos demográficos de estas ciudades. El objetivo principal es determinar si existe alguna correlación entre la densidad de población y la calidad del aire. Para esto, se utilizaron datos demográficos obtenidos de un archivo CSV y datos de calidad del aire obtenidos a través de una API.
+El análisis que se realiza en estos ejercicios implica cargar datos demográficos y datos de calidad del aire, limpiar y procesar estos datos, y luego realizar análisis en una base de datos SQLite. Aquí está el análisis punto por punto:
 
-## Proceso
+## Ejercicio 1: Cargar Datos Demográficos
 
-### 1. Carga de datos demográficos
-Se cargaron los datos demográficos de las ciudades de Estados Unidos desde el archivo CSV utilizando la biblioteca pandas en Python.
+Función: ej_1_cargar_datos_demograficos
 
-### 2. Obtención de datos de calidad del aire
-Los datos de calidad del aire para cada ciudad se obtuvieron utilizando la API de https://api-ninjas.com/api/airquality.
+## 1. Cargar Datos:
+Se utiliza la biblioteca Pandas para cargar los datos demográficos desde una URL proporcionada.
+El separador de campos es ;.
 
-### 3. Limpieza de datos demográficos
-Se realizaron diversas operaciones de limpieza, incluida la eliminación de columnas innecesarias y la eliminación de filas duplicadas.
+## 2. Limpieza de Datos Demográficos:
+Se eliminan las columnas Race, Count, y Number of Veterans.
+Se eliminan las filas duplicadas.
 
-### 4. Creación de la base de datos
-Se creó una base de datos en SQLite y se cargaron las tablas de datos demográficos y calidad del aire en la base de datos.
+## Ejercicio 2: Cargar Calidad del Aire y Crear Tabla de Dimensiones
+Función: ej_2_cargar_calidad_aire
 
-### 5. Análisis de datos
-Se realizaron operaciones de unión y agregación en la base de datos utilizando consultas SQL para verificar si las ciudades más pobladas tienen peor calidad del aire.
+## 1. Cargar Datos de Calidad del Aire:
+Se utiliza la API https://api-ninjas.com/api/airquality para obtener datos de calidad del aire para cada ciudad en la tabla demográfica.
+Se extrae el elemento concentration de cada entrada por fila.
 
-### 6. Query para verificar si las ciudades más pobladas tienen la peor calidad del aire.
-```
-query = ''' 
-SELECT Cities.City, Cities."Total population", ConAir.CO, ConAir.NO2, ConAir.O3, ConAir."PM2.5", ConAir.PM10
-FROM Cities
-JOIN ConAir ON ConAir.City = Cities.City
-ORDER BY Cities."Total population" DESC
-LIMIT 0, 10;
-'''
-```
-## Resultados
-Los resultados revelaron que, contrariamente a la expectativa, Los Ángeles, aunque no es la ciudad más poblada, presenta una peor calidad del aire en términos de concentración de CO, NO2, O3, PM2.5 y PM10 en comparación con Nueva York, que es la ciudad más poblada. Por lo tanto, los datos no respaldan la afirmación de que las ciudades más pobladas tienen necesariamente la peor calidad del aire. Para obtener información detallada, consulta el archivo 'CalidadAireCiudad.csv'.
+## 2. Almacenar Datos en una Tabla de Dimensiones:
+Se crea un DataFrame de Pandas para almacenar los datos de calidad del aire.
+Los datos incluyen concentraciones de CO, NO2, O3, SO2, PM2.5, PM10, overall_aqi y la ciudad.
 
-## Archivos adjuntos
-- El archivo 'CalidadAireCiudad.csv' contiene los  10 primeros resultados completos del análisis de calidad del aire.
-- El archivo de base de datos SQLite 'IngestaDatos.db' contiene las tablas de datos demográficos y calidad del aire utilizadas en el análisis.
+## Ejercicio 3: Crear Base de Datos SQLite y Realizar Análisis
 
+## 1. Creación de Base de Datos SQLite:
+
+Se crea una base de datos SQLite.
+Se cargan las dos tablas procesadas (datos demográficos y calidad del aire) en la base de datos.
+
+## 2. Análisis en SQLite:
+
+Se aplican joins y agregaciones para verificar si las ciudades más pobladas tienen la peor calidad del aire.
+Se muestran las primeras 10 columnas del resultado.
+
+## Creación de un Script y Documentación
+Se crea un script para el ejercicio 3, y luego se proporciona una query SQL
+
+## Interpretación
+Los hallazgos indicaron que, en contra de lo anticipado, Los Ángeles, a pesar de no ser la ciudad más habitada, exhibe una calidad del aire más deficiente en términos de concentraciones de CO, NO2, O3, PM2.5 y PM10 en comparación con Nueva York, la ciudad más poblada. Así, los datos no respaldan la suposición de que las ciudades con mayor población tengan necesariamente una peor calidad del aire. Para obtener detalles adicionales, se recomienda consultar el archivo 'calidad_aire.csv'.
